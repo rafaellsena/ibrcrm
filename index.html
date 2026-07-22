@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IBrCRM Dashboard</title>
+<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/topojson-client/3.1.0/topojson-client.min.js"></script>
+</head>
+<body>
+
+<header>
+  <div class="logo"><span>IBr</span>CRM Dashboard<small>Sistema de Análise de Competitividade Regional Municipal</small></div>
+  <nav class="topnav" id="topnav">
+    <a data-view="principal" class="active">Principal</a>
+    <a data-view="mapas">Mapas</a>
+    <a data-view="series">Séries Temporais</a>
+    <a data-view="subindices">Subíndices</a>
+  </nav>
+</header>
+
+<div class="layout">
+  <aside class="sidebar" id="sidebar"></aside>
+  <main class="main" id="main"></main>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
