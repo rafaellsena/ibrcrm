@@ -28,6 +28,7 @@ const ICONS_EIXO = {
 const FLAGS_SDR = [
   ['amazonia_legal', 'Amazônia Legal', null],
   ['SUDENE', 'SUDENE', null],
+  ['sudeco', 'SUDECO', 'Municípios de MT, MS, GO e DF — área de atuação definida pela Lei Complementar 129/2009'],
   ['semiarido', 'Semiárido', null],
   ['faixa_fronteira', 'Faixa de Fronteira', null],
   ['matopiba', 'MATOPIBA', null],
