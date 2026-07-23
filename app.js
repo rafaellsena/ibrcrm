@@ -453,7 +453,7 @@ function renderPrincipal(main) {
   charts['chart-mini'] = new Chart(document.getElementById('chart-mini'), {
     type: 'line',
     data: { datasets: datasetsExemplo },
-    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { boxWidth: 8, font: { size: 10 } } } }, scales: { x: { type: 'linear', ticks: { stepSize: 1, font: { size: 10 } } }, y: { min: 0, max: 1 } } },
+    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { boxWidth: 8, font: { size: 10 } } } }, scales: { x: { type: 'linear', ticks: { stepSize: 1, font: { size: 10 }, callback: v => v } }, y: { min: 0, max: 1 } } },
   });
 
   // mini mapa: classificação geral do ano mais recente, só Região Nordeste
@@ -590,7 +590,7 @@ function renderSeries(main) {
     options: {
       responsive: true, maintainAspectRatio: false, animation: false,
       plugins: { legend: { position: 'top', labels: { boxWidth: 10, font: { size: 11 }, filter: item => item.text !== 'P75' && item.text !== '_individual' } } },
-      scales: { x: { type: 'linear', ticks: { stepSize: 1 } }, y: { min: 0, max: 1 } },
+      scales: { x: { type: 'linear', ticks: { stepSize: 1, callback: v => v } }, y: { min: 0, max: 1 } },
     },
   });
 
@@ -611,7 +611,7 @@ function renderSeries(main) {
   charts['chart-series'] = new Chart(document.getElementById('chart-series'), {
     type: 'line',
     data: { datasets },
-    options: { responsive: true, maintainAspectRatio: false, scales: { x: { type: 'linear', ticks: { stepSize: 1 } }, y: { min: 0, max: 1 } }, plugins: { legend: { position: 'top', labels: { boxWidth: 10, font: { size: 11 } } } } },
+    options: { responsive: true, maintainAspectRatio: false, scales: { x: { type: 'linear', ticks: { stepSize: 1, callback: v => v } }, y: { min: 0, max: 1 } }, plugins: { legend: { position: 'top', labels: { boxWidth: 10, font: { size: 11 } } } } },
   });
 
   let linhasTabela = [];
@@ -703,7 +703,7 @@ function renderSubindices(main) {
   charts['chart-subindices'] = new Chart(document.getElementById('chart-subindices'), {
     type: 'line',
     data: { datasets },
-    options: { responsive: true, maintainAspectRatio: false, scales: { x: { type: 'linear', ticks: { stepSize: 1 } }, y: { min: 0, max: 1 } }, plugins: { legend: { position: 'top', labels: { boxWidth: 10, font: { size: 10 } } } } },
+    options: { responsive: true, maintainAspectRatio: false, scales: { x: { type: 'linear', ticks: { stepSize: 1, callback: v => v } }, y: { min: 0, max: 1 } }, plugins: { legend: { position: 'top', labels: { boxWidth: 10, font: { size: 10 } } } } },
   });
 
   document.getElementById('tabela-subindices').innerHTML = `
