@@ -773,12 +773,6 @@ function renderMetodologia(main) {
     </div>
 
     <div class="card meta-secao">
-      <h3>Sobre o LEAP e a UFPB</h3>
-      <p>O LEAP é o laboratório de pesquisa da Universidade Federal da Paraíba responsável pelo desenvolvimento
-      técnico e metodológico do índice, sob coordenação do professor Jevuks Matheus.</p>
-    </div>
-
-    <div class="card meta-secao">
       <h3>Limitações conhecidas</h3>
       <p>Seis municípios criados por desmembramento posterior a 2010 (Boa Esperança do Norte-MT, Mojuí dos Campos-PA,
       Pescaria Brava-SC, Balneário Rincão-SC, Pinto Bandeira-RS e Paraíso das Águas-MS) não constam na série do
