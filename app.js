@@ -6,13 +6,13 @@
 
 const CLASS_LABELS = ['Muito baixo', 'Baixo', 'Médio', 'Alto', 'Muito alto'];
 const EIXOS = [
-  { key: 'idx3', col: 3, campo: 'ambiental', nome: 'Ambiental', desc: 'Conservação, políticas ambientais e sustentabilidade' },
-  { key: 'idx4', col: 4, campo: 'social', nome: 'Social', desc: 'Indicadores sociais, qualidade de vida e bem-estar' },
-  { key: 'idx5', col: 5, campo: 'infra', nome: 'Infraestrutura', desc: 'Infraestrutura básica, transporte e comunicação' },
-  { key: 'idx6', col: 6, campo: 'produtivo', nome: 'Produtivo', desc: 'PIB per capita, emprego e desenvolvimento econômico' },
-  { key: 'idx7', col: 7, campo: 'institucional', nome: 'Institucional', desc: 'Governança, transparência e capacidade institucional' },
-  { key: 'idx8', col: 8, campo: 'educacao', nome: 'Educação', desc: 'Educação, qualificação profissional e saúde' },
-  { key: 'idx9', col: 9, campo: 'inovacao', nome: 'Inovação', desc: 'Inovação, tecnologia e desenvolvimento científico' },
+  { key: 'idx3', col: 3, valCol: 10, campo: 'ambiental', nome: 'Ambiental', desc: 'Conservação, políticas ambientais e sustentabilidade' },
+  { key: 'idx4', col: 4, valCol: 11, campo: 'social', nome: 'Social', desc: 'Indicadores sociais, qualidade de vida e bem-estar' },
+  { key: 'idx5', col: 5, valCol: 12, campo: 'infra', nome: 'Infraestrutura', desc: 'Infraestrutura básica, transporte e comunicação' },
+  { key: 'idx6', col: 6, valCol: 13, campo: 'produtivo', nome: 'Produtivo', desc: 'PIB per capita, emprego e desenvolvimento econômico' },
+  { key: 'idx7', col: 7, valCol: 14, campo: 'institucional', nome: 'Institucional', desc: 'Governança, transparência e capacidade institucional' },
+  { key: 'idx8', col: 8, valCol: 15, campo: 'educacao', nome: 'Educação', desc: 'Educação, qualificação profissional e saúde' },
+  { key: 'idx9', col: 9, valCol: 16, campo: 'inovacao', nome: 'Inovação', desc: 'Inovação, tecnologia e desenvolvimento científico' },
 ];
 const ICONS_EIXO = {
   'Geral': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.5 4 5.5 4 9s-1.5 6.5-4 9c-2.5-2.5-4-5.5-4-9s1.5-6.5 4-9z"/></svg>',
@@ -662,18 +662,32 @@ function renderSubindices(main) {
   if (!row) {
     cardsEl.innerHTML = `<div class="desc">Sem dado para o ano ${state.anoAnalise}.</div>`;
   } else {
+    const anoAnterior = state.anoAnalise - 1;
+    const rowAnterior = linhaAno(m.code_muni, anoAnterior);
+    const LIMIAR_ESTAVEL = 0.01; // variação menor que isso (em pontos, escala 0-1) conta como estável
+
+    const tendencia = (valorAtual, valorAnteriorVal) => {
+      if (rowAnterior == null || valorAnteriorVal == null) return `<span class="trend trend-flat">Sem dado em ${anoAnterior}</span>`;
+      const delta = valorAtual - valorAnteriorVal;
+      if (Math.abs(delta) < LIMIAR_ESTAVEL) return `<span class="trend trend-flat">→ Estável vs ${anoAnterior}</span>`;
+      if (delta > 0) return `<span class="trend trend-up">▲ Melhorou vs ${anoAnterior}</span>`;
+      return `<span class="trend trend-down">▼ Piorou vs ${anoAnterior}</span>`;
+    };
+
     const classeGeral = classifica01(row[2]);
     cardsEl.innerHTML = `
       <div class="idx-card geral" style="margin-bottom:10px;">
         <div class="top"><span class="name">Índice Geral</span><span class="badge-classe b${classeGeral}">${CLASS_LABELS[classeGeral]}</span></div>
         <div class="val">${row[2].toFixed(3)}</div>
         <div class="txt">Avaliação geral da competitividade regional municipal (escala 0 a 1)</div>
+        ${tendencia(row[2], rowAnterior ? rowAnterior[2] : null)}
       </div>
       <div class="kpi-grid">
         ${EIXOS.map(e => `
           <div class="idx-card">
             <div class="top"><span class="name">${e.nome}</span><span class="badge-classe b${row[e.col]}">${CLASS_LABELS[row[e.col]]}</span></div>
             <div class="txt">${e.desc}</div>
+            ${tendencia(row[e.valCol], rowAnterior ? rowAnterior[e.valCol] : null)}
           </div>`).join('')}
       </div>
     `;
@@ -682,8 +696,9 @@ function renderSubindices(main) {
   destroyChart('chart-subindices');
   const coresEixo = { 2: '#2f5fe0', 3: '#1f8a5b', 4: '#c23a3a', 5: '#e6b800', 6: '#7a5cff', 7: '#0aa5b0', 8: '#e07a3f', 9: '#a340c9' };
   const nomesCol = { 2: 'Índice Geral', 3: 'Ambiental', 4: 'Social', 5: 'Infraestrutura', 6: 'Produtivo', 7: 'Institucional', 8: 'Educação', 9: 'Inovação' };
+  const colValor = { 3: 10, 4: 11, 5: 12, 6: 13, 7: 14, 8: 15, 9: 16 }; // categoria (0-4) -> coluna do valor contínuo (0-1) real
   const datasets = [2, 3, 4, 5, 6, 7, 8, 9].map(col => ({
-    label: nomesCol[col], data: serieCompleta.map(r => ({ x: r[1], y: col === 2 ? r[2] : r[col] / 4 })),
+    label: nomesCol[col], data: serieCompleta.map(r => ({ x: r[1], y: col === 2 ? r[2] : r[colValor[col]] })),
     borderColor: coresEixo[col], tension: 0.3, pointRadius: 2, borderWidth: col === 2 ? 3 : 1.5,
   }));
   charts['chart-subindices'] = new Chart(document.getElementById('chart-subindices'), {
