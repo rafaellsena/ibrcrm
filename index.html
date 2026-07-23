@@ -12,19 +12,31 @@
 </head>
 <body>
 
-<header>
-  <div class="logo"><span>IBr</span>CRM Dashboard<small>Sistema de Análise de Competitividade Regional Municipal</small></div>
-  <nav class="topnav" id="topnav">
-    <a data-view="principal" class="active">Principal</a>
-    <a data-view="mapas">Mapas</a>
-    <a data-view="series">Séries Temporais</a>
-    <a data-view="subindices">Subíndices</a>
-  </nav>
+<header class="topbar">
+  <div class="dash-header">
+    <div>
+      <h1>IBrCRM Dashboard</h1>
+      <p>Índice Brasileiro de Competitividade Regional Municipal · Secretaria de Desenvolvimento Regional (SDR) · Período: 2010–2023 · Fonte: LEAP/UFPB</p>
+    </div>
+    <a href="#" data-view="metodologia" class="badge topnav-badge">Metodologia e fontes ↗</a>
+  </div>
 </header>
+<nav class="topnav" id="topnav">
+  <a data-view="principal" class="active">Principal</a>
+  <a data-view="mapas">Mapas</a>
+  <a data-view="series">Séries Temporais</a>
+  <a data-view="subindices">Subíndices</a>
+  <a data-view="metodologia">Metodologia</a>
+</nav>
 
 <div class="layout">
   <aside class="sidebar" id="sidebar"></aside>
   <main class="main" id="main"></main>
+</div>
+
+<div class="rodape-simples">
+  IBrCRM Dashboard — Secretaria de Desenvolvimento Regional (SDR) | Ministério da Integração e do Desenvolvimento Regional<br>
+  Desenvolvido por LEAP — Laboratório de Economia e Avaliação de Políticas Públicas — UFPB
 </div>
 
 <script src="app.js"></script>
