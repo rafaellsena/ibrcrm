@@ -664,34 +664,36 @@ function renderSubindices(main) {
   } else {
     const anoAnterior = state.anoAnalise - 1;
     const rowAnterior = linhaAno(m.code_muni, anoAnterior);
-    const LIMIAR_ESTAVEL = 0.01; // variação menor que isso (em pontos, escala 0-1) conta como estável
 
-    const tendencia = (valorAtual, valorAnteriorVal) => {
-      if (rowAnterior == null || valorAnteriorVal == null) return `<span class="trend trend-flat">Sem dado em ${anoAnterior}</span>`;
-      const delta = valorAtual - valorAnteriorVal;
-      if (Math.abs(delta) < LIMIAR_ESTAVEL) return `<span class="trend trend-flat">→ Estável vs ${anoAnterior}</span>`;
-      if (delta > 0) return `<span class="trend trend-up">▲ Melhorou vs ${anoAnterior}</span>`;
+    // Critério confirmado com o painel original: a tendência compara a CATEGORIA (Muito baixo..Muito alto),
+    // não o valor numérico bruto — um município só "melhora" ou "piora" quando muda de faixa.
+    const tendencia = (classeAtual, classeAnteriorVal) => {
+      if (rowAnterior == null || classeAnteriorVal == null) return `<span class="trend trend-flat">Sem dado em ${anoAnterior}</span>`;
+      if (classeAtual === classeAnteriorVal) return `<span class="trend trend-flat">→ Estável vs ${anoAnterior}</span>`;
+      if (classeAtual > classeAnteriorVal) return `<span class="trend trend-up">▲ Melhorou vs ${anoAnterior}</span>`;
       return `<span class="trend trend-down">▼ Piorou vs ${anoAnterior}</span>`;
     };
 
     const classeGeral = classifica01(row[2]);
+    const classeGeralAnterior = rowAnterior ? classifica01(rowAnterior[2]) : null;
     cardsEl.innerHTML = `
       <div class="idx-card geral" style="margin-bottom:10px;">
         <div class="top"><span class="name">Índice Geral</span><span class="badge-classe b${classeGeral}">${CLASS_LABELS[classeGeral]}</span></div>
         <div class="val">${row[2].toFixed(3)}</div>
         <div class="txt">Avaliação geral da competitividade regional municipal (escala 0 a 1)</div>
-        ${tendencia(row[2], rowAnterior ? rowAnterior[2] : null)}
+        ${tendencia(classeGeral, classeGeralAnterior)}
       </div>
       <div class="kpi-grid">
         ${EIXOS.map(e => `
           <div class="idx-card">
             <div class="top"><span class="name">${e.nome}</span><span class="badge-classe b${row[e.col]}">${CLASS_LABELS[row[e.col]]}</span></div>
             <div class="txt">${e.desc}</div>
-            ${tendencia(row[e.valCol], rowAnterior ? rowAnterior[e.valCol] : null)}
+            ${tendencia(row[e.col], rowAnterior ? rowAnterior[e.col] : null)}
           </div>`).join('')}
       </div>
     `;
   }
+
 
   destroyChart('chart-subindices');
   const coresEixo = { 2: '#2f5fe0', 3: '#1f8a5b', 4: '#c23a3a', 5: '#e6b800', 6: '#7a5cff', 7: '#0aa5b0', 8: '#e07a3f', 9: '#a340c9' };
