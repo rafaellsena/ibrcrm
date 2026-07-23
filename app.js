@@ -296,10 +296,6 @@ function wireTopnav(skipBind) {
     a.classList.toggle('active', a.dataset.view === state.view);
     if (!skipBind) a.addEventListener('click', () => irPara(a.dataset.view));
   });
-  if (!skipBind) {
-    const badgeLink = document.querySelector('.topnav-badge');
-    if (badgeLink) badgeLink.addEventListener('click', e => { e.preventDefault(); irPara('metodologia'); });
-  }
   document.getElementById('eixo-mapa-wrap').style.display = state.view === 'mapas' ? 'block' : 'none';
   sidebar.style.display = (state.view === 'metodologia' || state.view === 'principal') ? 'none' : '';
 }
@@ -361,7 +357,7 @@ function renderPrincipal(main) {
         <div class="mini-card"><div class="ic">▤</div><p>Medir a competitividade regional com base em múltiplas dimensões.</p></div>
         <div class="mini-card"><div class="ic">⇄</div><p>Permitir comparações temporais e espaciais entre municípios.</p></div>
         <div class="mini-card"><div class="ic">★</div><p>Identificar pontos fortes e oportunidades de melhoria.</p></div>
-        <div class="mini-card"><div class="ic">✓</div><p>Subsidiar políticas públicas e investimentos privados.</p></div>
+        <div class="mini-card"><div class="ic">✓</div><p>Subsidiar políticas públicas.</p></div>
       </div>
     </div>
 
